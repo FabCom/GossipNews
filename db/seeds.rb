@@ -5,3 +5,50 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+JoinPrivateMessageRecipient.destroy_all
+PrivateMessage.destroy_all
+JoinGossipTag.destroy_all
+Tag.destroy_all
+City.destroy_all
+Gossip.destroy_all
+User.destroy_all
+
+
+10.times do
+  City.create(name: Faker::Address.city, zip_code: Faker::Address.zip_code)
+end
+
+10.times do
+  Tag.create(title: Faker::Lorem.word )
+end
+
+10.times do
+  user = User.new(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, city: City.all.sample(1)[0], description: Faker::Lorem.paragraph(sentence_count: 2), age: rand(18..65))
+  user.email = "#{user.first_name}.#{user.last_name}@domaine.fr"
+  user.save
+end
+
+20.times do
+  Gossip.create(title: Faker::Lorem.sentence, content: Faker::Lorem.paragraph(sentence_count: 2), user: User.all.sample(1).first)
+end
+
+Gossip.all.each do |current|
+  rand(1..3).times do
+    JoinGossipTag.create(gossip: current, tag: Tag.all.sample(1).first)
+  end
+end
+
+20.times do
+ PrivateMessage.create(content: Faker::Lorem.paragraph(sentence_count: 2), sender: User.all.sample(1).first)
+end
+
+PrivateMessage.all.each do |current_pm|
+  User.all.sample(rand(1..9)).each do |current_recipient|
+    JoinPrivateMessageRecipient.create(private_message: current_pm, recipient: current_recipient)
+  end
+end
+
+20.times do
+  Comment.create(content: Faker::Lorem.paragraph(sentence_count: 2), gossip: Gossip.all.sample(1).first, user: User.all.sample(1).first)
+end
