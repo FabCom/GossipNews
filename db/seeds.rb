@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Like.destroy_all
+Comment.destroy_all
 JoinPrivateMessageRecipient.destroy_all
 PrivateMessage.destroy_all
 JoinGossipTag.destroy_all
@@ -51,4 +53,8 @@ end
 
 20.times do
   Comment.create(content: Faker::Lorem.paragraph(sentence_count: 2), gossip: Gossip.all.sample(1).first, user: User.all.sample(1).first)
+end
+
+20.times do
+  Like.create(user: User.all.sample(1).first, gossip: Gossip.all.sample(1).first)
 end

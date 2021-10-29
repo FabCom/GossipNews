@@ -5,4 +5,5 @@ class User < ApplicationRecord
   has_many :sent_messages, foreign_key: 'sender_id', class_name: "PrivateMessage"
   has_many :received_messages, foreign_key: 'recipient_id', class_name: "join_private_message_recipients"
   has_many :comments
+  has_many :likes
 end
