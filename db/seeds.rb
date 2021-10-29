@@ -52,7 +52,15 @@ PrivateMessage.all.each do |current_pm|
 end
 
 20.times do
-  Comment.create(content: Faker::Lorem.paragraph(sentence_count: 2), gossip: Gossip.all.sample(1).first, user: User.all.sample(1).first)
+  comment = Comment.new(content: Faker::Lorem.paragraph(sentence_count: 2), user: User.all.sample(1).first)
+  comment.commentable = Gossip.all.sample(1).first
+  comment.save
+end
+
+20.times do
+  comment = Comment.new(content: Faker::Lorem.paragraph(sentence_count: 1), user: User.all.sample(1).first)
+  comment.commentable = Comment.all.sample(1).first
+  comment.save
 end
 
 20.times do
